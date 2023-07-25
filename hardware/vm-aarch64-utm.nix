@@ -8,21 +8,25 @@
     [ (modulesPath + "/profiles/qemu-guest.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "virtio_pci" "usbhid" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "virtio_pci" "usbhid" "usb_storage" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
   # This won't work on other systems... it's hardcoded to my current M2's UUIDs.
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/fd23d902-9741-4bfb-a1e6-1c5685a2e261";
+    { device = "/dev/disk/by-uuid/a4ec78a2-233a-45bc-b7cd-c8093bb14162";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/3F78-3D08";
+    { device = "/dev/disk/by-uuid/E864-623C";
       fsType = "vfat";
     };
+
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/afbaadf2-be13-48f2-bb18-e33b78ef34e5"; }
+    ];
 
   swapDevices = [ ];
 

@@ -1,5 +1,5 @@
 {
-  description = "kylecarbs' NixOS configuration";
+  description = "bpmct's NixOS configuration";
 
   outputs = { self, nixpkgs }: {
     nixosConfigurations.vm-aarch64-utm = nixpkgs.lib.nixosSystem rec {

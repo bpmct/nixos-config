@@ -16,10 +16,10 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   i18n.defaultLocale = "en_CA.UTF-8";
-  networking.hostName = "nixos";
+  networking.hostName = "m2-nixos";
   networking.networkmanager.enable = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" "impure-derivations" ];
-  time.timeZone = "America/Regina";
+  time.timeZone = "America/Chicago";
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -36,9 +36,9 @@ in
   hardware.opengl.enable = true;
 
   # Add my user!
-  users.users.kyle = {
+  users.users.benpotter = {
     isNormalUser = true;
-    description = "Kyle Carberry";
+    description = "Ben Potter";
     # Wheel allows sudo without password.
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.fish;
@@ -102,7 +102,7 @@ in
 
     displayManager = {
       autoLogin.enable = true;
-      autoLogin.user = "kyle";
+      autoLogin.user = "benpotter";
       defaultSession = "none+i3";
     };
 
