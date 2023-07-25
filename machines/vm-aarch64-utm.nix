@@ -48,13 +48,6 @@ in
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
 
-  # Natural scrolling
-  services.xserver.libinput = {
-    enable = true;
-    naturalScrolling = true; 
-    additionalOptions = ''MatchIsTouchpad "on"'';
-  };
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
@@ -84,11 +77,17 @@ in
     libnotify
     xorg.libxcvt
     arandr
+    gnome3.nautilus
+    xorg.xev
+    xorg.xmodmap
   ];
 
   programs.fish.enable = true;
+  
   # Required for automating resizing with UTM.
   services.spice-vdagentd.enable = true;
+  services.qemuGuest.enable = true;
+  
   # Docker
   virtualisation.docker.enable = true;
   services.sysbox.enable = true;
@@ -101,7 +100,7 @@ in
     enable = true;
     layout = "us";
     xkbVariant = "";
-    dpi = 180;
+    dpi = 220;
 
     desktopManager = {
       xterm.enable = false;
@@ -140,7 +139,7 @@ in
   # Adjusts the scaling of the display.
   environment.variables = {
     GDK_SCALE = "2";
-    GDK_DPI_SCALE = "0.5";
+    GDK_DPI_SCALE = "0.25";
   };
   # Makes Chrome use dark mode by default!
   environment.etc = {
