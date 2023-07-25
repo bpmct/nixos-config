@@ -49,6 +49,13 @@ in
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
 
+  # Natural scrolling
+  services.xserver.libinput = {
+    enable = true;
+    naturalScrolling = true; 
+    additionalOptions = ''MatchIsTouchpad "on"'';
+  };
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
