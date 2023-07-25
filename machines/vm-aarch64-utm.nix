@@ -31,7 +31,6 @@ in
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
   # Enable graphics virtualization.
   hardware.opengl.enable = true;
 
@@ -84,6 +83,7 @@ in
     gotools
     libnotify
     xorg.libxcvt
+    arandr
   ];
 
   programs.fish.enable = true;
