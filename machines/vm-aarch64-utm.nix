@@ -80,6 +80,7 @@ in
     gnome3.nautilus
     xorg.xev
     xorg.xmodmap
+    mate.caja
   ];
 
   programs.fish.enable = true;
@@ -139,7 +140,7 @@ in
   # Adjusts the scaling of the display.
   environment.variables = {
     GDK_SCALE = "2";
-    GDK_DPI_SCALE = "0.25";
+    GDK_DPI_SCALE = "0.5";
   };
   # Makes Chrome use dark mode by default!
   environment.etc = {
