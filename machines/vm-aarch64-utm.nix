@@ -104,10 +104,10 @@ in
     xkbVariant = "";
 
     # For Ultrawide
-    dpi = 120;
+    # dpi = 120;
 
     # For laptop
-    # dpi = 240;
+    dpi = 220;
 
     desktopManager = {
       xterm.enable = false;
@@ -147,10 +147,10 @@ in
   environment.variables = {
     GDK_SCALE = "2";
     # For Ultrawide
-    GDK_DPI_SCALE = "0.5";
+    # GDK_DPI_SCALE = "0.5";
 
     # For laptop
-    # GDK_DPI_SCALE = "0.4";
+    GDK_DPI_SCALE = "0.4";
   };
   
   # Makes Chrome use dark mode by default!
