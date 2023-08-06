@@ -6,6 +6,17 @@
 
 let
   apple-emoji = pkgs.callPackage ../pkgs/apple-emoji.nix { };
+  dbus-sway-environment = pkgs.writeTextFile {
+  name = "dbus-sway-environment";
+  destination = "/bin/dbus-sway-environment";
+  executable = true;
+
+  text = ''
+    dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+    systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+    systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+  '';
+  };
 in
 {
   imports =
@@ -78,11 +89,48 @@ in
     libnotify
     xorg.libxcvt
     arandr
-    gnome3.nautilus
-    xorg.xev
-    xorg.xmodmap
-    mate.caja
+    # gnome3.nautilus
+    # xorg.xev
+    # xorg.xmodmap
+    # mate.caja
+
+    # Sway stuff
+    dbus-sway-environment
+    configure-gtk
+    wayland
+    xdg-utils # for opening default programs when clicking links
+    glib # gsettings
+    dracula-theme # gtk theme
+    gnome3.adwaita-icon-theme  # default gnome cursors
+    swaylock
+    swayidle
+    grim # screenshot functionality
+    slurp # screenshot functionality
+    wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
+    bemenu # wayland clone of dmenu
+    mako # notification system developed by swaywm maintainer
+    wdisplays # tool to configure displays
   ];
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
+  };
+  services.dbus.enable = true;
+
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    # gtk portal needed to make gtk apps happy
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
+
+  # enable sway window manager
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+  };
 
   programs.fish.enable = true;
   
@@ -98,50 +146,50 @@ in
   services.gnome.gnome-keyring.enable = true;
 
   # Change the display manager to i3.
-  services.xserver = {
-    enable = true;
-    layout = "us";
-    xkbVariant = "";
+  # services.xserver = {
+  #   enable = true;
+  #   layout = "us";
+  #   xkbVariant = "";
 
-    # For Ultrawide
-    # dpi = 120;
+  #   # For Ultrawide
+  #   # dpi = 120;
 
-    # For laptop
-    dpi = 220;
+  #   # For laptop
+  #   dpi = 220;
 
-    desktopManager = {
-      xterm.enable = false;
-    };
+  #   desktopManager = {
+  #     xterm.enable = false;
+  #   };
 
-    displayManager = {
-      autoLogin.enable = true;
-      autoLogin.user = "benpotter";
-      defaultSession = "none+i3";
-    };
+  #   displayManager = {
+  #     autoLogin.enable = true;
+  #     autoLogin.user = "benpotter";
+  #     defaultSession = "none+i3";
+  #   };
 
-    windowManager.i3 = {
-      enable = true;
-      extraPackages = with pkgs; [
-        dmenu
-        rofi
-        i3status
-        i3lock
-        i3blocks
-        xclip
-        xorg.libXcursor
-        xorg.libXi
-        dunst
+  #   windowManager.i3 = {
+  #     enable = true;
+  #     extraPackages = with pkgs; [
+  #       dmenu
+  #       rofi
+  #       i3status
+  #       i3lock
+  #       i3blocks
+  #       xclip
+  #       xorg.libXcursor
+  #       xorg.libXi
+  #       dunst
 
-        # Required for py3status to work!
-        (python3.withPackages (p: with p; [
-          python-dateutil
-          google-api-python-client
-          httplib2
-          py3status
-        ]))
-      ];
-    };
-  };
+  #       # Required for py3status to work!
+  #       (python3.withPackages (p: with p; [
+  #         python-dateutil
+  #         google-api-python-client
+  #         httplib2
+  #         py3status
+  #       ]))
+  #     ];
+  #   };
+  # };
 
   # Adjusts the scaling of the display.
   environment.variables = {
