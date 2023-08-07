@@ -55,7 +55,7 @@ in
   # Enable sound with pipewire.
   # sound.enable = true;
   # hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
+  # security.rtkit.enable = true;
 
   # Enable graphics virtualization.
   hardware.opengl.enable = true;
@@ -139,12 +139,24 @@ in
     wlr.enable = true;
     # gtk portal needed to make gtk apps happy
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    
   };
 
   # enable sway window manager
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
+
+    extraPackages = with pkgs; [
+        swaylock
+        swayidle
+        grim         # screenshot functionality
+        slurp        # screenshot functionality
+        wl-clipboard
+        # make sure the default gnome icons are avaliable
+        # to gtk applications
+        gnome3.adwaita-icon-theme
+    ];
   };
 
   programs.fish.enable = true;
@@ -206,14 +218,31 @@ in
   #   };
   # };
 
-  # Adjusts the scaling of the display.
-  environment.variables = {
-    GDK_SCALE = "2";
-    # For Ultrawide
-    # GDK_DPI_SCALE = "0.5";
+  services.xserver = {
+    enable = true;
+    displayManager =  {
+        #   displayManager = {
+      autoLogin.enable = true;
+      autoLogin.user = "benpotter";
+      gdm = {
+        enable = true;
+        wayland = true;
+      };
+    };
+  };
 
-    # For laptop
-    GDK_DPI_SCALE = "0.4";
+  # # Adjusts the scaling of the display.
+  # environment.variables = {
+  #   GDK_SCALE = "2";
+  #   # For Ultrawide
+  #   # GDK_DPI_SCALE = "0.5";
+
+  #   # For laptop
+  #   GDK_DPI_SCALE = "0.4";
+  # };
+
+  environment.variables = {
+    "WLR_NO_HARDWARE_CURSORS" = "0";
   };
   
   # Makes Chrome use dark mode by default!
