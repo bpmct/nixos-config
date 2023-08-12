@@ -82,6 +82,7 @@ in
     xorg.xev
     xorg.xmodmap
     mate.caja
+    nixos.slack
   ];
 
   programs.fish.enable = true;
@@ -103,11 +104,10 @@ in
     layout = "us";
     xkbVariant = "";
 
-    # For Ultrawide
-    # dpi = 120;
-
-    # For laptop
+    # Default DPI for laptop
     dpi = 220;
+
+    # We'll use i3 modes + xrandr to set for other displays
 
     desktopManager = {
       xterm.enable = false;
@@ -146,11 +146,7 @@ in
   # Adjusts the scaling of the display.
   environment.variables = {
     GDK_SCALE = "2";
-    # For Ultrawide
-    # GDK_DPI_SCALE = "0.5";
-
-    # For laptop
-    GDK_DPI_SCALE = "0.4";
+    GDK_DPI_SCALE = "0.5";
   };
   
   # Makes Chrome use dark mode by default!
